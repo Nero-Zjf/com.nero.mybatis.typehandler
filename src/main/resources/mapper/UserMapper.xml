@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nero.mybatis.typehandler.mapper.UserMapper">
+    <resultMap id="user" type="com.nero.mybatis.typehandler.domain.User">
+        <id property="id" column="id"/>
+        <result property="name" column="name"/>
+        <!--显式启用TypeHandler-方式1-->
+        <!--<result property="sex" column="sex" typeHandler="com.nero.mybatis.typehandler.handler.SexEnumHandler"/>-->
+        <result property="sex" column="sex"/>
+    </resultMap>
+    <!-- 根据id查询一个用户信息 -->
+    <select id="getUserById" parameterType="Long"
+            resultType="com.nero.mybatis.typehandler.domain.User" resultMap="user">
+        select * from user where id = #{id}
+    </select>
+    <!-- 查询所有用户信息 -->
+    <select id="getAllUser" resultType="com.nero.mybatis.typehandler.domain.User">
+        select * from user
+    </select>
+    <!-- 添加一个用户，#{name}为 User 的属性值 -->
+    <insert id="addUser" parameterType="com.nero.mybatis.typehandler.domain.User">
+        insert into user (id,name,sex)
+        values(#{id},#{name},#{sex})
+        <!-- 显式启用TypeHandler-方式1 -->
+        <!-- values(#{id},#{name},#{sex,typeHandler=com.nero.mybatis.typehandler.handler.SexEnumHandler}) -->
+    </insert>
+    <!--修改一个用户 -->
+    <update id="updateUser" parameterType="com.nero.mybatis.typehandler.domain.User">
+        update user set name =
+        #{name},sex = #{sex} where id = #{id}
+    </update>
+    <!-- 删除一个用户 -->
+    <delete id="deleteUser" parameterType="Long">
+        delete from user where id
+        = #{id}
+    </delete>
+</mapper>
